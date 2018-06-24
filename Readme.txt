@@ -1,6 +1,20 @@
 Phonebook Directory
 
-This project is implemented to perform CRUD operations for Phonebook directory. 
+This project is implemented to perform CRUD operations for Phonebook directory.
+
+To run this project you need to do following steps:
+1) Donwload the ZIP file or clone this repository on your local machine.
+2) Build you solution to download all the nuget package. (make sure your internet connection is ON while building the solution.)
+3) Create database as TestDB and execute given database scripts.
+4) Generate new connection string with your sql server connection and udpate the connection string of Phonebook.Service -> Web.Config.
+5) Change properties of your solution to run mulpliple projects.
+	1) Right click on solution.
+	2) Go to properties.
+	3) Select Start up Project from left list -> Inside it select Multiple Start Up project option.
+	4) Change Action of Phonebook.Service and Phonebook.TestUI projects to Start.
+	5) Click on OK.
+	6) Run the project.
+Now you should be able to view the empty list of the phonebook records.
 
 The main focus of this project is on 
 1) Web API implementation, 
