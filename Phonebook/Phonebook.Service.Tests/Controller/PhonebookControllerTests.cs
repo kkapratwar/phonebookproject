@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Phonebook.Database;
 using Moq;
 using PhoneBook.Service.Helper;
-using PhoneBook.Service.Contracts;
 using PhoneBook.Service.Controllers;
 using FluentAssertions;
 using System.Net.Http;
@@ -72,6 +71,49 @@ namespace Phonebook.Service.Tests.Controller
         }
 
         /// <summary>
+        /// Test to get phonebook record by Id with success.
+        /// </summary>
+        [TestMethod]
+        public void GetPhonebookRecordByIdWithSuccess()
+        {
+            this.phonebookRepository.Setup(x => x.GetPhonebookRecord(It.IsAny<int>())).Returns(new Common.Phonebook());
+
+            var httpResponse = this.phonebookController.Get(It.IsAny<int>());
+            httpResponse.StatusCode.Should().Be(HttpStatusCode.OK, "get request processed successfully.");
+            httpResponse.Content.Should().NotBeNull("should return phonebook record.");
+
+            this.phonebookRepository.VerifyAll();
+        }
+
+        /// <summary>
+        /// Test to get phonebook record by invalid Id.
+        /// </summary>
+        [TestMethod]
+        public void GetPhonebookRecordByIdWithInvlaidId()
+        {
+            this.phonebookRepository.Setup(x => x.GetPhonebookRecord(It.IsAny<int>()));
+
+            var httpResponse = this.phonebookController.Get(It.IsAny<int>());
+            httpResponse.StatusCode.Should().Be(HttpStatusCode.NotFound, "not found code should be returned.");
+
+            this.phonebookRepository.VerifyAll();
+        }
+
+        /// <summary>
+        /// Test to get phonebook record by id with exception.
+        /// </summary>
+        [TestMethod]
+        public void GetPhonebookRecordByIdWithException()
+        {
+            this.phonebookRepository.Setup(x => x.GetPhonebookRecord(It.IsAny<int>())).Throws(new Exception());
+
+            var httpResponse = this.phonebookController.Get(It.IsAny<int>());
+            httpResponse.StatusCode.Should().Be(HttpStatusCode.InternalServerError, "exception occurred while processing the get request.");
+
+            this.phonebookRepository.VerifyAll();
+        }
+
+        /// <summary>
         /// Adds phonebook record with success.
         /// </summary>
         [TestMethod]
@@ -79,11 +121,27 @@ namespace Phonebook.Service.Tests.Controller
         {
             this.phonebookRepository.Setup(x => x.AddNewPhonebookRecord(It.IsAny<Common.Phonebook>())).Returns(1);
 
+            var modelState = this.phonebookController.ModelState;
             var httpResponse = this.phonebookController.Post(It.IsAny<Common.Phonebook>());
             httpResponse.StatusCode.Should().Be(HttpStatusCode.OK, "add request processed successfully.");
             httpResponse.Content.Should().NotBe("0", "should return id of the newly added phonebook records.");
 
             this.phonebookRepository.VerifyAll();
+        }
+
+        /// <summary>
+        /// Adds phonebook record with invalid model state.
+        /// </summary>
+        [TestMethod]
+        public void AddPhonebookRecordWithInvalidModelState()
+        {
+            this.phonebookRepository.Setup(x => x.AddNewPhonebookRecord(It.IsAny<Common.Phonebook>())).Returns(1);
+
+            var modelState = this.phonebookController.ModelState;
+            modelState.AddModelError("FirstName", "First name field is required.");
+            var httpResponse = this.phonebookController.Post(It.IsAny<Common.Phonebook>());
+            httpResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest, "bad request error should be returned on model state error.");
+            modelState["FirstName"].Errors[0].ErrorMessage.Should().Be("First name field is required.", "model state error should be returned.");
         }
 
         /// <summary>
@@ -113,6 +171,21 @@ namespace Phonebook.Service.Tests.Controller
             ((ObjectContent)httpResponse.Content).Value.Should().Be(true, "phone record should be updated successfully.");
 
             this.phonebookRepository.VerifyAll();
+        }
+
+        /// <summary>
+        /// Updates the phonebook record with invalid model state.
+        /// </summary>
+        [TestMethod]
+        public void UpdatePhonebookRecordWithInvalidModelState()
+        {
+            this.phonebookRepository.Setup(x => x.UpdatePhonebookRecord(It.IsAny<Common.Phonebook>()));
+
+            var modelState = this.phonebookController.ModelState;
+            modelState.AddModelError("FirstName", "First name field is required.");
+            var httpResponse = this.phonebookController.Put(It.IsAny<Common.Phonebook>());
+            httpResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest, "bad request error should be returned on model state error.");
+            modelState["FirstName"].Errors[0].ErrorMessage.Should().Be("First name field is required.", "model state error should be returned.");
         }
 
         /// <summary>

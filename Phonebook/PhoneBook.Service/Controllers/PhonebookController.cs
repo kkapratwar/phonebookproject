@@ -7,7 +7,6 @@
     using System.Web.Http;
     using Phonebook.Common;
     using Phonebook.Database;
-    using PhoneBook.Service.Contracts;
     using PhoneBook.Service.Filters;
 
     /// <summary>
@@ -15,7 +14,7 @@
     /// </summary>
     [CustomAuthentication]
     [RoutePrefix("api/phonebook")]
-    public class PhonebookController : ApiController, IPhonebookController
+    public class PhonebookController : ApiController
     {
         /// <summary>
         /// The phonebook repository
@@ -53,6 +52,35 @@
         }
 
         /// <summary>
+        /// Gets the phonebook record by specified identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The <see cref="Phonebook"/></returns>
+        [HttpGet]
+        [Route("getbyid/{id}")]
+        public HttpResponseMessage Get(int id)
+        {
+            try
+            {
+                var phonebook = this.phonebookRepository.GetPhonebookRecord(id);
+
+                if (phonebook != null)
+                {
+                    return Request.CreateResponse<Phonebook>(HttpStatusCode.OK, phonebook);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound,"Resource not found.");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                //Log exception by using log4net.
+                return InternalServerErrorMessage();
+            }
+        }
+
+        /// <summary>
         /// Adds the specified phonebook record.
         /// </summary>
         /// <param name="phonebook">The phonebook.</param>
@@ -63,9 +91,16 @@
         {
             try
             {
-                var phonebookId = this.phonebookRepository.AddNewPhonebookRecord(phonebook);
+                if (ModelState.IsValid)
+                {
+                    var phonebookId = this.phonebookRepository.AddNewPhonebookRecord(phonebook);
 
-                return Request.CreateResponse(HttpStatusCode.OK, phonebookId);
+                    return Request.CreateResponse(HttpStatusCode.OK, phonebookId);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                }
             }
             catch (Exception ex)
             {
@@ -85,9 +120,16 @@
         {
             try
             {
-                this.phonebookRepository.UpdatePhonebookRecord(phonebook);
+                if (ModelState.IsValid)
+                {
+                    this.phonebookRepository.UpdatePhonebookRecord(phonebook);
 
-                return Request.CreateResponse(HttpStatusCode.OK, true);
+                    return Request.CreateResponse(HttpStatusCode.OK, true);
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                }
             }
             catch (Exception ex)
             {
@@ -119,7 +161,7 @@
                 //Log exception by using log4net.
                 return InternalServerErrorMessage();
             }
-            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Record not found.");
+            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Resource not found.");
         }
 
         /// <summary>

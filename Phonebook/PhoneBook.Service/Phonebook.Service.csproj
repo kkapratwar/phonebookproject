@@ -161,10 +161,9 @@
   <ItemGroup>
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Contracts\IPhonebookController.cs" />
-    <Compile Include="Contracts\ITokenController.cs" />
     <Compile Include="Controllers\PhonebookController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
+    <Compile Include="Filters\APIAuthentication.cs" />
     <Compile Include="Filters\CustomAuthentication.cs" />
     <Compile Include="Filters\UnityFilterProvider.cs" />
     <Compile Include="Global.asax.cs">

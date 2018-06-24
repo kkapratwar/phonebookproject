@@ -21,7 +21,8 @@
         {
             using (var phonebookEntities = new TestDbEntities())
             {
-                return phonebookEntities.AddPhonebookRecord(phonebook.FirstName, phonebook.LastName, phonebook.PhoneNumber, phonebook.Email, phonebook.Status);
+                var result = phonebookEntities.AddPhonebookRecord(phonebook.FirstName, phonebook.LastName, phonebook.PhoneNumber, phonebook.Email, phonebook.Status).FirstOrDefault();
+                return Convert.ToInt32(result);
             }
         }
 

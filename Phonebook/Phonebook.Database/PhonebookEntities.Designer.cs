@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'F:\Kalyan\PhoneBook\Phonebook\Phonebook.Database\PhonebookEntities.edmx'. 
+﻿// T4 code generation is enabled for model 'F:\Kalyan\PhonebookRepo\phonebookproject\Phonebook\Phonebook.Database\PhonebookEntities.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

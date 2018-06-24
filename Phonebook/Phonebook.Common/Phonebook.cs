@@ -1,6 +1,7 @@
 ﻿namespace Phonebook.Common
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// The phonebook model.
@@ -21,6 +22,7 @@
         /// <value>
         /// The first name.
         /// </value>
+        [Required]
         public string FirstName { get; set; }
 
         /// <summary>
@@ -29,6 +31,7 @@
         /// <value>
         /// The last name.
         /// </value>
+        [Required]
         public string LastName { get; set; }
 
         /// <summary>
@@ -37,6 +40,8 @@
         /// <value>
         /// The email.
         /// </value>
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid Email Address.")]
         public string Email { get; set; }
 
         /// <summary>
@@ -45,6 +50,9 @@
         /// <value>
         /// The phone number.
         /// </value>
+        [Required]
+        [MaxLength(15)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Phone number must be numeric.")]
         public string PhoneNumber { get; set; }
 
         /// <summary>

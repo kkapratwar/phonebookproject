@@ -1,0 +1,59 @@
+﻿@model Phonebook.Common.Phonebook
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "AddEditPhonebookRecord";
+}
+
+@if (Model.Id > 0)
+{
+    <h2>Edit Phonebook Record</h2>
+}
+else
+{
+    <h2>Add Phonebook Record</h2>
+}
+
+<div class="x_content">
+    @using (Html.BeginForm("AddEditPhonebookRecord", "Phonebook", FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.ValidationSummary()
+
+        <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12 top-margin">
+                <label><span class="lnr lnr-screen"></span> Company Name</label>
+                @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", @placeholder = "Enter First Name" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12 top-margin">
+                <label><span class="lnr lnr-screen"></span> Company Name</label>
+                @Html.TextBoxFor(x => x.LastName, new { @class = "form-control", @placeholder = "Enter Last Name" })
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12 top-margin">
+                <label><span class="lnr lnr-screen"></span> Company Name</label>
+                @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control", @placeholder = "Enter Phone Number" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6 col-sm-6 col-xs-12 top-margin">
+                <label><span class="lnr lnr-screen"></span> Company Name</label>
+                @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Enter Email" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-8 col-xs-12 pull-right">
+                <a href="/Phonebook/Index" class="btn btn-primary pull-right" type="button">Cancel</a>
+                <button type="submit" class="btn btn-success pull-right">Submit</button>
+            </div>
+        </div>
+    }
+</div>
+

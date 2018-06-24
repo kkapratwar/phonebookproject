@@ -28,7 +28,7 @@ namespace Phonebook.Database
         }
     
     
-        public virtual int AddPhonebookRecord(string firstName, string lastName, string phoneNumber, string email, Nullable<bool> isActive)
+        public virtual ObjectResult<Nullable<int>> AddPhonebookRecord(string firstName, string lastName, string phoneNumber, string email, Nullable<bool> isActive)
         {
             var firstNameParameter = firstName != null ?
                 new ObjectParameter("firstName", firstName) :
@@ -50,7 +50,7 @@ namespace Phonebook.Database
                 new ObjectParameter("isActive", isActive) :
                 new ObjectParameter("isActive", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddPhonebookRecord", firstNameParameter, lastNameParameter, phoneNumberParameter, emailParameter, isActiveParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("AddPhonebookRecord", firstNameParameter, lastNameParameter, phoneNumberParameter, emailParameter, isActiveParameter);
         }
     
         public virtual int DeletePhonebookRecord(Nullable<int> id)

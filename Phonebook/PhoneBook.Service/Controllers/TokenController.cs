@@ -9,7 +9,7 @@ using System.Web.Http;
 using Phonebook.Common;
 using Phonebook.Database;
 using PhoneBook.Common;
-using PhoneBook.Service.Contracts;
+using PhoneBook.Service.Filters;
 using PhoneBook.Service.Helper;
 
 namespace PhoneBook.Service.Controllers
@@ -18,8 +18,9 @@ namespace PhoneBook.Service.Controllers
     /// The TokenController.
     /// </summary>
     /// <seealso cref="System.Web.Http.ApiController" />
+    [APIAuthentication]
     [RoutePrefix("api/token")]
-    public class TokenController : ApiController, ITokenController
+    public class TokenController : ApiController
     {
         /// <summary>
         /// The phonebook repository
@@ -49,19 +50,29 @@ namespace PhoneBook.Service.Controllers
         [HttpGet]
         [Route("")]
         [Route("getToken")]
-        public string Get()
+        public string Get(string token = null)
         {
             try
             {
-                var newToken = Guid.NewGuid();
-                phonebookRepository.AddToken(new TokenRequestModel { Token = newToken.ToString(), ExpirationTime = DateTime.Now.AddMinutes(this.configuration.ExpirationTime) });
-                return newToken.ToString();
+                if (string.IsNullOrWhiteSpace(token) || !(this.phonebookRepository.GetTokenId(token) > 0))
+                {
+                    return CreateToken();
+                }
+
+                return token;
             }
             catch (Exception ex)
             {
                 //Log message using log4net.
                 return null;
             }
+        }
+
+        private string CreateToken()
+        {
+            var newToken = Guid.NewGuid();
+            this.phonebookRepository.AddToken(new TokenRequestModel { Token = newToken.ToString(), ExpirationTime = DateTime.Now.AddMinutes(this.configuration.ExpirationTime) });
+            return newToken.ToString();
         }
     }
 }

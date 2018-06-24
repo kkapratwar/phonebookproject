@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
 using Phonebook.Database;
-using PhoneBook.Service.Contracts;
 using PhoneBook.Service.Controllers;
 using PhoneBook.Service.Filters;
 using Unity;

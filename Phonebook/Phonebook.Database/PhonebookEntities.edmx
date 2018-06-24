@@ -40,7 +40,7 @@
     <edmx:ConceptualModels>
       <Schema Namespace="TestDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="TestDbEntities" annotation:LazyLoadingEnabled="true" >
-          <FunctionImport Name="AddPhonebookRecord">
+          <FunctionImport Name="AddPhonebookRecord" ReturnType="Collection(Int32)">
             <Parameter Name="firstName" Mode="In" Type="String" />
             <Parameter Name="lastName" Mode="In" Type="String" />
             <Parameter Name="phoneNumber" Mode="In" Type="String" />

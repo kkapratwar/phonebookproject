@@ -6,7 +6,6 @@ using Phonebook.Database;
 using Moq;
 using PhoneBook.Service.Helper;
 using PhoneBook.Common;
-using PhoneBook.Service.Contracts;
 using PhoneBook.Service.Controllers;
 using FluentAssertions;
 
@@ -31,7 +30,7 @@ namespace Phonebook.Service.Tests.Controller
         /// <summary>
         /// The token controller
         /// </summary>
-        private ITokenController tokenController;
+        private TokenController tokenController;
 
         /// <summary>
         /// Initializes this instance.
